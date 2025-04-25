@@ -1,0 +1,5 @@
+# Ignorar arquivos grandes
+data/processed/base_geral.parquet
+data/raw/applicants.json
+data/raw/prospects.json
+data/raw/vagas.json
