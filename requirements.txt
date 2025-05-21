@@ -1,4 +1,9 @@
 json
 os
 pandas
-pathlib 
+pathlib
+numpy
+datetime
+matplotlib
+sklearn
+joblib
