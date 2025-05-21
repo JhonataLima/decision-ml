@@ -4,3 +4,5 @@ data/raw/applicants.json
 data/raw/prospects.json
 data/raw/vagas.json
 data/processed/base_tratada.parquet
+data/processed/feature_engineering.parquet
+data/processed/dataset_modelagem.parquet
