@@ -4,7 +4,6 @@ import os
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score
 
-# Caminhos
 DATA_PATH = "data/processed/dados_treinamento.pkl"
 PIPELINE_PATH = "models/pipeline_transformacao.pkl"
 MODEL_PATH = "models/random_forest_model.pkl"
@@ -13,7 +12,6 @@ def carregar_dados():
     print("Carregando dados de treino/teste...")
     X_train, X_test, y_train, y_test = joblib.load(DATA_PATH)
 
-    # Remover linhas com NaN
     mask_train = ~np.isnan(X_train).any(axis=1)
     mask_test = ~np.isnan(X_test).any(axis=1)
     X_train, y_train = X_train[mask_train], y_train[mask_train]

@@ -17,20 +17,16 @@ def gerar_features(df: pd.DataFrame) -> pd.DataFrame:
     """
     Gera novas features para a base.
     """
-    # Feature temporal
     if 'data_candidatura' in df.columns:
         df['data_candidatura'] = pd.to_datetime(df['data_candidatura'], errors='coerce')
         df['dias_desde_candidatura'] = (datetime.now() - df['data_candidatura']).dt.days
 
-    # Feature de texto: tamanho do objetivo profissional
     if 'infos_basicas_objetivo_profissional' in df.columns:
         df['objetivo_len'] = df['infos_basicas_objetivo_profissional'].fillna('').apply(len)
 
-    # Feature: quantidade de certificações
     if 'informacoes_profissionais_certificacoes' in df.columns:
         df['qtd_certificacoes'] = df['informacoes_profissionais_certificacoes'].fillna('').apply(lambda x: len(str(x).split(',')))
 
-    # Feature booleana: possui LinkedIn
     if 'informacoes_pessoais_url_linkedin' in df.columns:
         df['possui_linkedin'] = df['informacoes_pessoais_url_linkedin'].notnull().astype(int)
 

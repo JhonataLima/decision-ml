@@ -87,6 +87,7 @@ def preparar_pipeline(X):
         ('transformer', transformer)
     ])
 
+
     return pipeline
 
 
@@ -96,8 +97,6 @@ def salvar_dados(X_train, X_test, y_train, y_test, pipeline):
 
     joblib.dump((X_train, X_test, y_train, y_test), "data/processed/dados_treinamento.pkl")
     joblib.dump(pipeline, "models/pipeline_transformacao.pkl")
-
-from features.feature_selection import *
 
 
 def main():

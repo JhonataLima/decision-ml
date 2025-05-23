@@ -2,6 +2,8 @@ import joblib
 import pandas as pd
 import os
 import traceback
+from src.model.custom_transformers import label_encode_df
+
 
 PIPELINE_PATH = "models/pipeline_transformacao.pkl"
 MODEL_PATH = "models/random_forest_model.pkl"

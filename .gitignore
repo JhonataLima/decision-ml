@@ -8,3 +8,4 @@ data/processed/feature_engineering.parquet
 data/processed/dataset_modelagem.parquet
 dados_treinamento.pkl
 data/inference/dados_testes.csv
+data/inference/predicoes.csv
