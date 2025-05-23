@@ -1,20 +1,40 @@
 import pandas as pd
 import joblib
 import os
-from features.feature_selection import label_encode_df
+import numpy as np
+from src.model.custom_transformers import label_encode_df
 
 PIPELINE_PATH = "models/pipeline_transformacao.pkl"
 MODEL_PATH = "models/random_forest_model.pkl"
 NOVOS_DADOS_PATH = "data/inference/dados_testes.csv"
 OUTPUT_PATH = "data/inference/predicoes.csv"
 
+# Colunas esperadas pelo pipeline (incluindo derivadas)
 COLUNAS_ESPERADAS = [
-    'informacoes_profissionais_nivel_profissional',
+    'modalidade',
+    'valor_venda',
+    'titulo_vaga',
+    'cliente',
+    'requisitante',
+    'analista_responsavel',
+    'infos_basicas_objetivo_profissional',
+    'infos_basicas_local',
+    'infos_basicas_sabendo_de_nos_por',
+    'informacoes_pessoais_sexo',
+    'informacoes_pessoais_estado_civil',
+    'informacoes_pessoais_pcd',
     'informacoes_profissionais_area_atuacao',
+    'informacoes_profissionais_titulo_profissional',
+    'informacoes_profissionais_remuneracao',
+    'informacoes_profissionais_nivel_profissional',
     'formacao_e_idiomas_nivel_academico',
     'formacao_e_idiomas_nivel_ingles',
     'formacao_e_idiomas_nivel_espanhol',
-    'formacao_e_idiomas_ano_conclusao'
+    'cargo_atual_cargo_atual',
+    'cargo_atual_cliente',
+    'cargo_atual_unidade',
+    'idade',
+    'anos_na_empresa'
 ]
 
 def carregar_pipeline_e_modelo():
@@ -28,14 +48,28 @@ def carregar_dados():
     return pd.read_csv(NOVOS_DADOS_PATH)
 
 def preparar_dados(df):
-    print("🧹 Tratando colunas faltantes e extras...")
+    print("🧹 Tratando colunas faltantes, extras e calculando derivadas...")
 
-    df = df[[col for col in df.columns if col in COLUNAS_ESPERADAS]]
+    # Calcular idade se possível
+    if 'informacoes_pessoais_data_nascimento' in df.columns:
+        df['informacoes_pessoais_data_nascimento'] = pd.to_datetime(df['informacoes_pessoais_data_nascimento'], errors='coerce')
+        df['idade'] = pd.Timestamp.now().year - df['informacoes_pessoais_data_nascimento'].dt.year
+    else:
+        df['idade'] = np.nan
 
+    # Calcular anos_na_empresa se possível
+    if 'cargo_atual_data_admissao' in df.columns:
+        df['cargo_atual_data_admissao'] = pd.to_datetime(df['cargo_atual_data_admissao'], errors='coerce')
+        df['anos_na_empresa'] = pd.Timestamp.now().year - df['cargo_atual_data_admissao'].dt.year
+    else:
+        df['anos_na_empresa'] = np.nan
+
+    # Adicionar colunas faltantes como NaN
     for col in COLUNAS_ESPERADAS:
         if col not in df.columns:
-            df[col] = None
+            df[col] = np.nan
 
+    # Garante a ordem das colunas
     df = df[COLUNAS_ESPERADAS]
     return df
 
