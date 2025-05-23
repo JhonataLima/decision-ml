@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
 import pandas as pd
+from src.monitoring.monitor_inference import registrar_inferencia
+
 
 pipeline = joblib.load("models/pipeline_transformacao.pkl")
 modelo = joblib.load("models/random_forest_model.pkl")
@@ -23,6 +25,8 @@ def predict(input_data: InputData):
         X_transformed = pipeline.transform(df)
 
         pred = modelo.predict(X_transformed)
+
+        registrar_inferencia(df, pred)
 
         return {"previsao": int(pred[0])}
     except Exception as e:
