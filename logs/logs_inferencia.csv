@@ -1,0 +1,2 @@
+timestamp,input_data,prediction
+2025-05-22T23:58:50.653893,"{""informacoes_pessoais_nome"": ""João"", ""informacoes_profissionais_area_atuacao"": ""TI"", ""informacoes_profissionais_nivel_profissional"": ""Pleno""}",match
